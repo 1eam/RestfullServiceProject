@@ -1,5 +1,6 @@
-package com.restfull.service.project.Controller;
+package com.restfull.service.project.controller;
 
+import com.restfull.service.project.model.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,8 +14,14 @@ public class UserController {
     }
 
     @GetMapping(path = "/{userId}")
-    public String getUser1(@PathVariable String userId) {
-        return "getUser was called on id:" + userId;
+    public User getUser1(@PathVariable String userId) {
+
+        User getResponse = new User();
+        getResponse.setName("Esther");
+        getResponse.setLastName("A M");
+        getResponse.setEmail("test@test.com");
+        
+        return getResponse;
     }
 
     @PostMapping
