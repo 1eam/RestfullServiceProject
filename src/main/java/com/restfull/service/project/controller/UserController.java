@@ -1,6 +1,7 @@
 package com.restfull.service.project.controller;
 
 import com.restfull.service.project.model.User;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +14,7 @@ public class UserController {
         return "getUser was called with page: " + page + " and max list items: " + limit;
     }
 
-    @GetMapping(path = "/{userId}")
+    @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public User getUser1(@PathVariable String userId) {
 
         User getResponse = new User();
