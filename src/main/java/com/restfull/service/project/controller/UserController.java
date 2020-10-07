@@ -20,7 +20,7 @@ public class UserController {
         getResponse.setName("Esther");
         getResponse.setLastName("A M");
         getResponse.setEmail("test@test.com");
-        
+
         return getResponse;
     }
 

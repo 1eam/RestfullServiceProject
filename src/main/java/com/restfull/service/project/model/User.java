@@ -2,6 +2,8 @@ package com.restfull.service.project.model;
 
 public class User {
     String name;
+    String lastName;
+    String email;
 
     public String getName() {
         return name;
@@ -26,7 +28,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    String lastName;
-    String email;
 }
