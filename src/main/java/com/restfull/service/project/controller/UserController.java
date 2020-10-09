@@ -14,7 +14,7 @@ public class UserController {
         return "getUser was called with page: " + page + " and max list items: " + limit;
     }
 
-    @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public User getUser1(@PathVariable String userId) {
 
         User getResponse = new User();
