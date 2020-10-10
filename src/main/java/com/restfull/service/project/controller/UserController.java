@@ -1,7 +1,9 @@
 package com.restfull.service.project.controller;
 
 import com.restfull.service.project.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,12 +27,18 @@ public class UserController {
         return getResponse;
     }
 
-    @PostMapping
-    public String createUser() {
-        return "createUser was called";
+    @PostMapping//(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+
+        User returnValue = new User();
+        returnValue.setName(user.getName());
+        returnValue.setLastName(user.getLastName());
+        returnValue.setEmail(user.getEmail());
+
+        return new ResponseEntity<User>(returnValue, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping()
     public String updateUser() {
         return "updateUser was called";
     }
