@@ -4,7 +4,12 @@ import com.restfull.service.project.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users") // https://localhost:8080/users
@@ -28,14 +33,15 @@ public class UserController {
     }
 
     @PostMapping//(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public User createUser(@Valid @RequestBody User user) {
 
         User returnValue = new User();
         returnValue.setName(user.getName());
         returnValue.setLastName(user.getLastName());
         returnValue.setEmail(user.getEmail());
 
-        return new ResponseEntity<User>(returnValue, HttpStatus.OK);
+        return returnValue;
     }
 
     @PutMapping()

@@ -1,8 +1,21 @@
 package com.restfull.service.project.model;
 
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class User {
+    @NotEmpty(message = "Name-field should not be empty")
+    @Size(min = 2, max = 60, message = "Size should at least have 2 characters with a maximum of 60")
     String name;
+
+    @NotNull (message = "Lastname-field should not be empty")
     String lastName;
+
+    @NotNull (message = "Email-field should not be empty")
+    @Email (message = "Enter a valid email")
     String email;
 
     public String getName() {
