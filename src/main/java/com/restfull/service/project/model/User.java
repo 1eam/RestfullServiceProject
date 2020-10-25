@@ -11,11 +11,11 @@ public class User {
     @Size(min = 2, max = 60, message = "Size should at least have 2 characters with a maximum of 60")
     String name;
 
-    @NotNull (message = "Lastname-field should not be empty")
+    @NotEmpty (message = "Lastname-field should not be empty")
     String lastName;
 
-    @NotNull (message = "Email-field should not be empty")
-    @Email (message = "Enter a valid email")
+    @NotEmpty (message = "Email-field should not be empty")
+    @Email (message = "You must enter a valid email-address")
     String email;
 
     public String getName() {
