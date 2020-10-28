@@ -3,10 +3,12 @@ package com.restfull.service.project.model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class User {
+
+    String id;
+
     @NotEmpty(message = "Name-field should not be empty")
     @Size(min = 2, max = 60, message = "Size should at least have 2 characters with a maximum of 60")
     String name;
@@ -17,6 +19,14 @@ public class User {
     @NotEmpty (message = "Email-field should not be empty")
     @Email (message = "You must enter a valid email-address")
     String email;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

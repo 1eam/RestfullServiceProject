@@ -4,16 +4,19 @@ import com.restfull.service.project.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users") // https://localhost:8080/users
 public class UserController {
+
+    //temporarily store users
+    Map<String, User> database;
 
     @GetMapping
     public String getUser(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -22,14 +25,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public User getUser1(@PathVariable String userId) {
+    public ResponseEntity<User> getUser2(@PathVariable String userId) {
 
-        User getResponse = new User();
-        getResponse.setName("Esther");
-        getResponse.setLastName("A M");
-        getResponse.setEmail("test@test.com");
-
-        return getResponse;
+        if (database.containsKey(userId)){
+            return new ResponseEntity<User>(database.get(userId), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PostMapping//(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -40,6 +42,13 @@ public class UserController {
         returnValue.setName(user.getName());
         returnValue.setLastName(user.getLastName());
         returnValue.setEmail(user.getEmail());
+        String uuid = UUID.randomUUID().toString();
+        returnValue.setId(uuid);
+
+        if (database == null){
+            database = new HashMap<>();
+        }
+        database.put(returnValue.getId(), returnValue);
 
         return returnValue;
     }
