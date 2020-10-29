@@ -28,9 +28,9 @@ public class UserController {
     public ResponseEntity<User> getUser2(@PathVariable String userId) {
 
         if (database.containsKey(userId)){
-            return new ResponseEntity<User>(database.get(userId), HttpStatus.OK);
+            return new ResponseEntity<>(database.get(userId), HttpStatus.OK);
         } else {
-            return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
@@ -45,9 +45,8 @@ public class UserController {
         String uuid = UUID.randomUUID().toString();
         returnValue.setId(uuid);
 
-        if (database == null){
-            database = new HashMap<>();
-        }
+        if (database == null) database = new HashMap<>();
+
         database.put(returnValue.getId(), returnValue);
 
         return returnValue;
