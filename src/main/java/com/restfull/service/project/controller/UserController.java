@@ -68,12 +68,10 @@ public class UserController {
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
     }
 
     @DeleteMapping
     public String deleteUser() {
         return "deleteUser was called";
     }
-
 }
