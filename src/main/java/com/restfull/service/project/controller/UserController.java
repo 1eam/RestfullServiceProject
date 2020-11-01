@@ -1,6 +1,7 @@
 package com.restfull.service.project.controller;
 
-import com.restfull.service.project.model.User;
+import com.restfull.service.project.model.UserModel;
+import com.restfull.service.project.model.updateUserModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class UserController {
 
     //temporarily store users
-    Map<String, User> database;
+    Map<String, UserModel> database;
 
     @GetMapping
     public String getUser(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<User> getUser2(@PathVariable String userId) {
+    public ResponseEntity<UserModel> getUser2(@PathVariable String userId) {
 
         if (database.containsKey(userId)){
             return new ResponseEntity<>(database.get(userId), HttpStatus.OK);
@@ -34,27 +35,40 @@ public class UserController {
         }
     }
 
-    @PostMapping//(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(value = HttpStatus.OK)
-    public User createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserModel> createUser(@Valid @RequestBody UserModel requestBody) {
 
-        User returnValue = new User();
-        returnValue.setName(user.getName());
-        returnValue.setLastName(user.getLastName());
-        returnValue.setEmail(user.getEmail());
+        UserModel newUser = new UserModel();
+        newUser.setName(requestBody.getName());
+        newUser.setLastName(requestBody.getLastName());
+        newUser.setEmail(requestBody.getEmail());
+        newUser.setPassword(requestBody.getPassword());
         String uuid = UUID.randomUUID().toString();
-        returnValue.setId(uuid);
+        newUser.setId(uuid);
 
         if (database == null) database = new HashMap<>();
 
-        database.put(returnValue.getId(), returnValue);
+        database.put(newUser.getId(), newUser);
 
-        return returnValue;
+        return new ResponseEntity<UserModel>(newUser, HttpStatus.OK);
     }
 
-    @PutMapping()
-    public String updateUser() {
-        return "updateUser was called";
+    @PutMapping(path = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<UserModel> updateUser(@PathVariable String userId, @Valid @RequestBody updateUserModel requestBody) {
+
+        if (database.containsKey(userId)){
+
+            UserModel selectedUser = database.get(userId);
+
+            selectedUser.setName(requestBody.getName());
+            selectedUser.setLastName(requestBody.getLastName());
+
+            return new ResponseEntity<>(selectedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
     }
 
     @DeleteMapping
