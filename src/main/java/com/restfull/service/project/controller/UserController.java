@@ -1,5 +1,6 @@
 package com.restfull.service.project.controller;
 
+import com.restfull.service.project.exceptions.UserServiceException;
 import com.restfull.service.project.model.UserModel;
 import com.restfull.service.project.model.updateUserModel;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ public class UserController {
     @GetMapping(path = "/{userId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<UserModel> getUser2(@PathVariable String userId) {
 
+        //to trigger custom exception handling. Its a test.
+        if (true){throw new UserServiceException("A user-service exception is thrown");}
+
         if (database.containsKey(userId)){
             return new ResponseEntity<>(database.get(userId), HttpStatus.OK);
         } else {
@@ -36,7 +40,6 @@ public class UserController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<UserModel> createUser(@Valid @RequestBody UserModel requestBody) {
 
         UserModel newUser = new UserModel();
