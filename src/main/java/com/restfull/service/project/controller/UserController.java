@@ -3,19 +3,22 @@ package com.restfull.service.project.controller;
 import com.restfull.service.project.exceptions.UserServiceException;
 import com.restfull.service.project.model.UserModel;
 import com.restfull.service.project.model.updateUserModel;
+import com.restfull.service.project.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/users") // https://localhost:8080/users
 public class UserController {
+
+    @Autowired
+    IUserService userServiceI;
 
     //temporarily store users
     Map<String, UserModel> database;
@@ -42,19 +45,8 @@ public class UserController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<UserModel> createUser(@Valid @RequestBody UserModel requestBody) {
 
-        UserModel newUser = new UserModel();
-        newUser.setName(requestBody.getName());
-        newUser.setLastName(requestBody.getLastName());
-        newUser.setEmail(requestBody.getEmail());
-        newUser.setPassword(requestBody.getPassword());
-        String uuid = UUID.randomUUID().toString();
-        newUser.setId(uuid);
-
-        if (database == null) database = new HashMap<>();
-
-        database.put(newUser.getId(), newUser);
-
-        return new ResponseEntity<UserModel>(newUser, HttpStatus.OK);
+        UserModel returnValue = userServiceI.createUser(requestBody);
+        return new ResponseEntity<UserModel>(returnValue, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{userId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
