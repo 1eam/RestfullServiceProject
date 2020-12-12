@@ -9,11 +9,18 @@ import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
-
-    //temporarily store users
+    //temporary database
     Map<String, UserModel> database;
 
-    //create User method
+    IdGenerator idGenerator;
+
+    public UserService() {
+    }
+
+    public UserService(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
+
     @Override
     public UserModel createUser(UserModel requestBody) {
 
@@ -22,8 +29,7 @@ public class UserService implements IUserService {
         newUser.setLastName(requestBody.getLastName());
         newUser.setEmail(requestBody.getEmail());
         newUser.setPassword(requestBody.getPassword());
-        String uuid = UUID.randomUUID().toString();
-        newUser.setId(uuid);
+        newUser.setId(idGenerator.generate());
 
         if (database == null) database = new HashMap<>();
 
