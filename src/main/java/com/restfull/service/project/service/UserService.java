@@ -1,18 +1,19 @@
 package com.restfull.service.project.service;
 
 import com.restfull.service.project.model.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
     //temporary database
     Map<String, UserModel> database;
 
-    IdGenerator idGenerator;
+    @Autowired
+    private IdGenerator idGenerator;
 
     public UserService() {
     }
@@ -29,7 +30,7 @@ public class UserService implements IUserService {
         newUser.setLastName(requestBody.getLastName());
         newUser.setEmail(requestBody.getEmail());
         newUser.setPassword(requestBody.getPassword());
-        newUser.setId(idGenerator.generate());
+        newUser.setId(idGenerator.generateUserId());
 
         if (database == null) database = new HashMap<>();
 
